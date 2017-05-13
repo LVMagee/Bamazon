@@ -61,21 +61,18 @@ inquirer.prompt([{
 	
 		// Query the database for info about the item including the quantity currently in stock. 
 		connection.query('SELECT product_name, price, stock_quantity FROM products WHERE ?', {item_ID: answer.itemid})
-			
-			console.log('\n  You have selected to buy ' + answer.quantity + ' ' + res[0].product_name + ' ' + ' at $' + res[0].price + ' each');
-			if (res[0].stock_quantity >= answer.quantity) {
+
+		console.log('\n  You have selected to buy ' + answer.quantity + ' ' + res[answer.itemId - 1].product_name + ' ' + ' at $' + res[answer.itemId - 1].price + ' each');
+		if (res[answer.itemId - 1].stock_quantity >= answer.quantity) {
 				//If enough inventory to complete order, process order by updating database inventory and notifying customer that order is complete. 
-				var itemQuantity = res[0].stock_quantity - answer.quantity;
+				var itemQuantity = res[answer.itemId - 1].stock_quantity - answer.quantity;
 			// updates database quantity
-			connection.query("UPDATE products SET ? WHERE ?", [{
-				stock_quantity: itemQuantity
-			},{
-				item_id: answer.itemid
-			}], function(err,res) {
+			connection.query("UPDATE products SET stock_quantity = ? WHERE item_id = ?", [itemQuantity, (answer.itemId)], function(err,res) {
 				if (err) throw err;
-			})	
+				
+			});	
 			// tallys total
-			var cost = res[0].price * answer.quantity;
+			var cost = res[answer.itemId - 1].price * answer.quantity;
 			console.log('\n  Order fulfilled! Your cost is $' + cost + '\n');
 
 			start();
@@ -87,29 +84,9 @@ inquirer.prompt([{
 				start();
 			}
 		});
-	});	
+});	
 
 }
-// go round again or exit
-var moreShopping = function() {
-    inquirer.prompt({
-        name: "action",
-        type: "list",
-
-        message: " Would like to continue shopping?\n",
-        choices: ["Yes", "No"]
-    }).then(function(answer) {
-        switch(answer.action) {
-            case 'Yes':
-                start();
-            break;
-
-            case 'No':
-                connection.end();
-            break;
-        }
-    })
-};
 
 
 start();
