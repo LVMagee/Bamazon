@@ -1,0 +1,24 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "fake store",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LVMagee/Bamazon.git"
+  },
+  "author": "lvmagee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LVMagee/Bamazon/issues"
+  },
+  "homepage": "https://github.com/LVMagee/Bamazon#readme",
+  "dependencies": {
+    "cli-table": "^0.3.1",
+    "inquire": "^0.4.8",
+    "mysql": "^2.13.0"
+  }
+}
